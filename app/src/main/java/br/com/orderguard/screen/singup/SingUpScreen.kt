@@ -19,6 +19,7 @@ import br.com.orderguard.databinding.SingupScreenBinding
 import br.com.orderguard.screen.login.LoginScreen
 import br.com.orderguard.screen.MainScreen
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
@@ -27,6 +28,7 @@ class SingUpScreen : AppCompatActivity() {
 
     private lateinit var binding: SingupScreenBinding
     private val auth = FirebaseAuth.getInstance()
+    private val db = FirebaseFirestore.getInstance()
     private val client = OkHttpClient()
     private var isPasswordVisible = false
     private var isConfirmPasswordVisible = false
@@ -58,15 +60,17 @@ class SingUpScreen : AppCompatActivity() {
         // Listener do botão de cadastro
         binding.cadastrarButton.setOnClickListener {
             if (validateInputFields()) {
-                validateCNPJWithAPI(binding.cnpjEditText.text.toString().trim())
+                // Remover máscara antes de enviar para a API
+                val cnpjUnmasked = binding.cnpjEditText.text.toString().replace(Regex("[^\\d]"), "")
+                validateCNPJWithAPI(cnpjUnmasked)
             }
         }
 
-        // Máscara de CNPJ
-        applyCnpjMask()
-
-        // Máscara de Telefone
+        // Aplicar máscara de telefone
         applyPhoneMask()
+
+        // Aplicar máscara de CNPJ
+        applyCnpjMask()
 
         // Configuração para alternar a visibilidade da senha
         togglePasswordVisibility()
@@ -75,74 +79,88 @@ class SingUpScreen : AppCompatActivity() {
         toggleConfirmPasswordVisibility()
     }
 
-    private fun applyCnpjMask() {
-        binding.cnpjEditText.addTextChangedListener(object : TextWatcher {
+    // Máscara de Telefone
+    private fun applyPhoneMask() {
+        binding.telefoneEditText.addTextChangedListener(object : TextWatcher {
             private var isUpdating = false
-            private val mask = "##.###.###/####-##"
+            private var oldText = ""
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                oldText = s.toString()
+            }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (isUpdating) {
-                    isUpdating = false
+                if (isUpdating) return
+
+                val unmasked = s.toString().replace(Regex("[^\\d]"), "")
+
+                if (unmasked == oldText.replace(Regex("[^\\d]"), "")) {
                     return
                 }
 
-                var unmasked = s.toString().replace(Regex("[^\\d]"), "")
-                if (unmasked.length > 14) unmasked = unmasked.substring(0, 14)
-
-                val masked = StringBuilder()
+                var masked = ""
+                val mask = "(##) #####-####"
                 var index = 0
-                for (char in mask.toCharArray()) {
+
+                for (char in mask) {
                     if (char == '#') {
                         if (index >= unmasked.length) break
-                        masked.append(unmasked[index])
+                        masked += unmasked[index]
                         index++
                     } else {
-                        masked.append(char)
+                        if (index >= unmasked.length) break
+                        masked += char
                     }
                 }
 
                 isUpdating = true
-                binding.cnpjEditText.setText(masked.toString())
-                binding.cnpjEditText.setSelection(masked.length)
+                binding.telefoneEditText.setText(masked)
+                binding.telefoneEditText.setSelection(masked.length)
+                isUpdating = false
             }
 
             override fun afterTextChanged(s: Editable?) {}
         })
     }
 
-    private fun applyPhoneMask() {
-        binding.telefoneEditText.addTextChangedListener(object : TextWatcher {
+    // Máscara de CNPJ
+    private fun applyCnpjMask() {
+        binding.cnpjEditText.addTextChangedListener(object : TextWatcher {
             private var isUpdating = false
-            private val mask = "(##) #####-####"
+            private var oldText = ""
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                oldText = s.toString()
+            }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (isUpdating) {
-                    isUpdating = false
+                if (isUpdating) return
+
+                val unmasked = s.toString().replace(Regex("[^\\d]"), "")
+
+                if (unmasked == oldText.replace(Regex("[^\\d]"), "")) {
                     return
                 }
 
-                var unmasked = s.toString().replace(Regex("[^\\d]"), "")
-                if (unmasked.length > 11) unmasked = unmasked.substring(0, 11)
-
-                val masked = StringBuilder()
+                var masked = ""
+                val mask = "##.###.###/####-##"
                 var index = 0
-                for (char in mask.toCharArray()) {
+
+                for (char in mask) {
                     if (char == '#') {
                         if (index >= unmasked.length) break
-                        masked.append(unmasked[index])
+                        masked += unmasked[index]
                         index++
                     } else {
-                        masked.append(char)
+                        if (index >= unmasked.length) break
+                        masked += char
                     }
                 }
 
                 isUpdating = true
-                binding.telefoneEditText.setText(masked.toString())
-                binding.telefoneEditText.setSelection(masked.length)
+                binding.cnpjEditText.setText(masked)
+                binding.cnpjEditText.setSelection(masked.length)
+                isUpdating = false
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -180,40 +198,40 @@ class SingUpScreen : AppCompatActivity() {
     }
 
     private fun validateInputFields(): Boolean {
-        val nomeEmpresa = binding.nomeEmpresaEditText.text.toString().trim()
+        val companyName = binding.nomeEmpresaEditText.text.toString().trim()
         val cnpj = binding.cnpjEditText.text.toString().trim()
-        val telefone = binding.telefoneEditText.text.toString().trim()
+        val phone = binding.telefoneEditText.text.toString().trim()
         val email = binding.emailEditText.text.toString().trim()
-        val senha = binding.passwordEditText.text.toString()
-        val confirmaSenha = binding.confirmaSenhaEditText.text.toString()
+        val password = binding.passwordEditText.text.toString()
+        val confirmPassword = binding.confirmaSenhaEditText.text.toString()
 
         when {
-            nomeEmpresa.isEmpty() -> {
-                binding.nomeEmpresaEditText.error = "O nome da empresa é obrigatório"
+            companyName.isEmpty() -> {
+                binding.nomeEmpresaEditText.error = "Company name is required"
                 return false
             }
             cnpj.isEmpty() -> {
-                binding.cnpjEditText.error = "CNPJ é obrigatório"
+                binding.cnpjEditText.error = "CNPJ is required"
                 return false
             }
-            telefone.isEmpty() -> {
-                binding.telefoneEditText.error = "O telefone é obrigatório"
+            phone.isEmpty() -> {
+                binding.telefoneEditText.error = "Phone number is required"
                 return false
             }
             email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
-                binding.emailEditText.error = "Email inválido"
+                binding.emailEditText.error = "Invalid email"
                 return false
             }
-            senha.isEmpty() -> {
-                binding.passwordEditText.error = "A senha é obrigatória"
+            password.isEmpty() -> {
+                binding.passwordEditText.error = "Password is required"
                 return false
             }
-            senha.length < 6 -> {
-                binding.passwordEditText.error = "A senha deve ter no mínimo 6 caracteres"
+            password.length < 6 -> {
+                binding.passwordEditText.error = "Password must be at least 6 characters"
                 return false
             }
-            senha != confirmaSenha -> {
-                binding.confirmaSenhaEditText.error = "As senhas não coincidem"
+            password != confirmPassword -> {
+                binding.confirmaSenhaEditText.error = "Passwords do not match"
                 return false
             }
             else -> return true
@@ -227,7 +245,7 @@ class SingUpScreen : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread {
-                    Toast.makeText(this@SingUpScreen, "Erro ao validar CNPJ", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SingUpScreen, "Failed to validate CNPJ", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -238,14 +256,14 @@ class SingUpScreen : AppCompatActivity() {
 
                     runOnUiThread {
                         if (jsonObject.has("error")) {
-                            binding.cnpjEditText.error = "CNPJ inválido ou não encontrado"
+                            binding.cnpjEditText.error = "Invalid or not found CNPJ"
                         } else {
                             registerUser()
                         }
                     }
                 } else {
                     runOnUiThread {
-                        binding.cnpjEditText.error = "CNPJ inválido ou não encontrado"
+                        binding.cnpjEditText.error = "Invalid or not found CNPJ"
                     }
                 }
             }
@@ -254,16 +272,31 @@ class SingUpScreen : AppCompatActivity() {
 
     private fun registerUser() {
         val email = binding.emailEditText.text.toString().trim()
-        val senha = binding.passwordEditText.text.toString()
+        val password = binding.passwordEditText.text.toString()
 
-        auth.createUserWithEmailAndPassword(email, senha)
+        auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show()
-                    clearFields()
-                    startActivity(Intent(this, MainScreen::class.java))
+                    val userId = auth.currentUser?.uid ?: return@addOnCompleteListener
+                    val userMap = hashMapOf(
+                        "companyName" to binding.nomeEmpresaEditText.text.toString(),
+                        "cnpj" to binding.cnpjEditText.text.toString(),
+                        "phone" to binding.telefoneEditText.text.toString(),
+                        "email" to email
+                    )
+
+                    db.collection("Users").document(userId).set(userMap)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
+                            clearFields()
+                            startActivity(Intent(this, MainScreen::class.java))
+                            finish()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "Failed to save data: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
                 } else {
-                    Toast.makeText(this, "Erro no cadastro: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Registration error: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
     }

@@ -38,13 +38,13 @@
             android:name=".screen.MainScreen"
             android:exported="false" />
         <activity
+            android:name=".screen.singup.SingUpScreen"
+            android:exported="false" />
+        <activity
             android:name=".screen.login.LoginScreen"
             android:exported="false" />
         <activity
             android:name=".screen.PresentationScreen"
-            android:exported="false" />
-        <activity
-            android:name=".screen.singup.SingUpScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -7,19 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".fragment.HomeFragment">
         <!-- Texto de Bem-vindo com espaço para o nome do usuário -->
-        <TextView
-            android:id="@+id/tvWelcomeUser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="15dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="Bem-vindo, \n  [Nome do Usuário]"
-            android:textColor="@color/primary_blue"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/tvWelcomeUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Bem-vindo \nao OrderGuard"
+        android:textColor="@color/primary_blue"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Título Minhas Ordens -->
         <TextView
