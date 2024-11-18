@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="br.com.orderguard.screen.MainScreen"
+        android:label="Início" />
+
+    <fragment
+        android:id="@+id/nav_business"
+        android:name="com.seuapp.BusinessFragment"
+        android:label="Clientes" />
+
+    <fragment
+        android:id="@+id/nav_orders"
+        android:name="com.seuapp.OrdersFragment"
+        android:label="Ordens" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.seuapp.SettingsFragment"
+        android:label="Configurações" />
+
+</navigation>

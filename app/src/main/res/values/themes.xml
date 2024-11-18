@@ -1,0 +1,59 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.OrderGuard" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Cor primária da marca -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <!-- Cor secundária da marca -->
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <!-- Cores do texto sobre as cores primárias e secundárias -->
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <!-- Outras configurações de tema -->
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:windowBackground">@color/background_gray</item>
+        <item name="colorSurface">@color/white</item>
+
+        <item name="android:navigationBarColor">@color/white</item>
+
+    </style>
+    <style name="Theme.OrderGuard" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Outros atributos do tema -->
+        <item name="android:statusBarColor">@color/background_gray</item>
+        <item name="android:navigationBarColor">@color/primary_blue</item>
+        <item name="colorPrimary">@color/primary_blue</item>
+        <item name="colorSecondary">@color/primary_blue</item> <!-- Altere para a cor desejada -->
+        <!-- Remova ou ajuste outros atributos relacionados -->
+    </style>
+
+    <style name="CustomBottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemIconSize">24dp</item>
+        <item name="itemTextAppearanceActive">@style/BottomNavigationTextStyle</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavigationTextStyle</item>
+    </style>
+
+    <!-- Estilo para o texto dos itens -->
+    <style name="BottomNavigationTextStyle" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">12sp</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+    </style>
+
+    <!-- Estilo personalizado para os itens -->
+    <style name="BottomNavigationItemStyle">
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:minHeight">70dp</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+    </style>
+
+    <style name="ThemeOverlay.BottomNav.PrimaryBlue" parent="">
+        <item name="android:statusBarColor">@color/primary_blue</item>
+        <item name="colorSecondary">@color/primary_blue</item>
+        <item name="colorOnSecondary">@android:color/white</item>
+    </style>
+
+    <style name="NoActiveIndicatorStyle" parent="">
+        <item name="itemActiveIndicatorStyle">@null</item>
+    </style>
+</resources>

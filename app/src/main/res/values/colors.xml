@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+
+    <color name="primary_blue">#2C3E50</color>
+    <color name="secondary_blue">#42A5F5</color>
+    <color name="dark_gray">#333333</color>
+
+    <!-- Cores de Fundo -->
+    <color name="background_gray">#F5F5F5</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Cores de Texto -->
+    <color name="primary_text">#212121</color>
+    <color name="light_text">#FFFFFF</color>
+
+    <!-- Cores dos Cards -->
+    <color name="pending_orders_color">#FFA726</color>
+    <color name="accepted_orders_color">#42A5F5</color>
+    <color name="completed_orders_color">#66BB6A</color>
+
+    <color name="colorPrimary">@color/primary_blue</color>
+    <color name="colorPrimaryVariant">#1976D2</color>
+    <color name="colorSecondary">@color/primary_blue</color>
+    <color name="colorSecondaryVariant">#1976D2</color>
+    <color name="colorOnPrimary">@android:color/white</color>
+    <color name="colorOnSecondary">@android:color/white</color>
+    <color name="transparent">#00000000</color>
+
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Estado selecionado -->
+    <item android:state_checked="true">
+        <!-- Defina a forma personalizada para o item selecionado -->
+        <shape android:shape="rectangle" >
+            <solid android:color="@color/primary_blue" />
+            <corners android:radius="16dp" /> <!-- Ajuste o raio conforme desejado -->
+            <!-- Você pode adicionar stroke, tamanho, etc. -->
+        </shape>
+    </item>
+    <!-- Estado não selecionado -->
+    <item>
+        <!-- Defina a forma para itens não selecionados (geralmente transparente) -->
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+</selector>
