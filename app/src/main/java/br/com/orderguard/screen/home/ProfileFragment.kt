@@ -1,4 +1,4 @@
-package br.com.orderguard.fragment
+package br.com.orderguard.screen.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import br.com.orderguard.R
 import br.com.orderguard.databinding.ProfileSettingsFragmentBinding
 import br.com.orderguard.screen.login.LoginScreen
 import com.google.firebase.auth.FirebaseAuth

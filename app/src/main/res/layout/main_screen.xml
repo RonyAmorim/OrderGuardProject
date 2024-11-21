@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_gray"
-    tools:context=".screen.MainScreen">
+    tools:context=".screen.home.MainScreen">
 
 
     <!-- Bottom Navigation View Melhorada -->

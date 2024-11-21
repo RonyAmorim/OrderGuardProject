@@ -13,29 +13,38 @@
         android:theme="@style/Theme.OrderGuard"
         tools:targetApi="31">
         <activity
-            android:name=".fragment.OrdersFragment"
+            android:name=".screen.client_registration.NotesFragment"
             android:exported="false" />
         <activity
-            android:name=".fragment.HomeFragment"
+            android:name=".screen.client_registration.AddressFragment"
             android:exported="false" />
         <activity
-            android:name=".fragment.ClientsFragment"
+            android:name=".screen.client_registration.PersonalDataFragment"
             android:exported="false" />
         <activity
-            android:name=".fragment.OrdersFragment"
+            android:name=".screen.home.OrdersFragment"
+            android:exported="false" />
+        <activity
+            android:name=".screen.home.OrdersFragment"
             android:exported="false"
             tools:ignore="DuplicateActivity" />
         <activity
-            android:name=".screen.ClientRegistrationScreen"
+            android:name=".screen.home.HomeFragment"
             android:exported="false" />
         <activity
-            android:name=".fragment.ProfileFragment"
+            android:name=".screen.home.ClientsFragment"
+            android:exported="false" />
+        <activity
+            android:name=".screen.client_registration.ClientRegistrationScreen"
+            android:exported="false" />
+        <activity
+            android:name=".screen.home.ProfileFragment"
             android:exported="false" />
         <activity
             android:name=".screen.OrderRegistrationScreen"
             android:exported="false" />
         <activity
-            android:name=".screen.MainScreen"
+            android:name=".screen.home.MainScreen"
             android:exported="false" />
         <activity
             android:name=".screen.singup.SingUpScreen"

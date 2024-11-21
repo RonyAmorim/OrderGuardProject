@@ -1,12 +1,8 @@
-package br.com.orderguard.screen
+package br.com.orderguard.screen.home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import br.com.orderguard.fragment.ClientsFragment
-import br.com.orderguard.fragment.HomeFragment
-import br.com.orderguard.fragment.OrdersFragment
-import br.com.orderguard.fragment.ProfileFragment
 import br.com.orderguard.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 

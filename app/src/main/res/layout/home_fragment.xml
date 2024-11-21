@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.HomeFragment">
+    tools:context=".screen.home.HomeFragment">
         <!-- Texto de Bem-vindo com espaço para o nome do usuário -->
     <TextView
         android:id="@+id/tvWelcomeUser"

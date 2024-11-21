@@ -9,6 +9,7 @@ import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import br.com.orderguard.R
+import br.com.orderguard.screen.home.MainScreen
 
 class OrderRegistrationScreen : AppCompatActivity() {
 

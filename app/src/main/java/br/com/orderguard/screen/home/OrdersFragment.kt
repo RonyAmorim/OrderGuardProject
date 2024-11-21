@@ -1,4 +1,4 @@
-package br.com.orderguard.fragment
+package br.com.orderguard.screen.home
 
 import android.content.Intent
 import android.os.Bundle

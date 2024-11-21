@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import br.com.orderguard.R
 import br.com.orderguard.databinding.LoginScreenBinding
-import br.com.orderguard.screen.MainScreen
+import br.com.orderguard.screen.home.MainScreen
 import br.com.orderguard.screen.singup.SingUpScreen
 import com.google.firebase.auth.FirebaseAuth
 

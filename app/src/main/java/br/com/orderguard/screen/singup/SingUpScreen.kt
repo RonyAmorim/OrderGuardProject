@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Patterns
 import android.widget.ImageButton
@@ -17,7 +16,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import br.com.orderguard.R
 import br.com.orderguard.databinding.SingupScreenBinding
 import br.com.orderguard.screen.login.LoginScreen
-import br.com.orderguard.screen.MainScreen
+import br.com.orderguard.screen.home.MainScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import okhttp3.*
