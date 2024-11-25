@@ -2,9 +2,12 @@ package br.com.orderguard.screen.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +24,7 @@ class ClientsFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var clientsAdapter: ClientsAdapter
     private val clientsList = mutableListOf<Client>()
+    private val filteredClientsList = mutableListOf<Client>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +35,7 @@ class ClientsFragment : Fragment() {
         // Configura o RecyclerView
         recyclerView = view.findViewById(R.id.rv_recent_orders)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        clientsAdapter = ClientsAdapter(clientsList)
+        clientsAdapter = ClientsAdapter(filteredClientsList)
         recyclerView.adapter = clientsAdapter
 
         // Carrega os clientes
@@ -40,9 +44,19 @@ class ClientsFragment : Fragment() {
         // Configura o botão para adicionar um cliente
         val addButton: View = view.findViewById(R.id.addButton)
         addButton.setOnClickListener {
-            // Navega para a tela de registro de cliente
             startActivity(Intent(activity, ClientRegistrationScreen::class.java))
         }
+
+        // Configura a barra de pesquisa
+        val searchBar: EditText = view.findViewById(R.id.searchBar)
+        searchBar.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                filterClients(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
 
         return view
     }
@@ -63,9 +77,12 @@ class ClientsFragment : Fragment() {
                     clientsList.clear()
                     for (document in snapshot.documents) {
                         val client = document.toObject(Client::class.java)
-                        client?.let { clientsList.add(it) }
+                        client?.let {
+                            it.id = document.id // Define o ID gerado pelo Firebase
+                            clientsList.add(it)
+                        }
                     }
-                    clientsAdapter.notifyDataSetChanged()
+                    filterClients("") // Exibe todos os clientes inicialmente
                 } else {
                     Toast.makeText(requireContext(), "Nenhum cliente encontrado.", Toast.LENGTH_SHORT).show()
                 }
@@ -73,5 +90,23 @@ class ClientsFragment : Fragment() {
             .addOnFailureListener { e ->
                 Toast.makeText(requireContext(), "Erro ao buscar clientes: ${e.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun filterClients(query: String) {
+        filteredClientsList.clear()
+        if (query.isEmpty()) {
+            filteredClientsList.addAll(clientsList)
+        } else {
+            val lowerCaseQuery = query.lowercase()
+            for (client in clientsList) {
+                if (client.fullName.lowercase().contains(lowerCaseQuery) ||
+                    client.cpfCnpj.lowercase().contains(lowerCaseQuery) ||
+                    client.email.lowercase().contains(lowerCaseQuery)
+                ) {
+                    filteredClientsList.add(client)
+                }
+            }
+        }
+        clientsAdapter.notifyDataSetChanged()
     }
 }
