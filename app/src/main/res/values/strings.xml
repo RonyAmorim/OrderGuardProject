@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">OrderGuard</string>
+
+    <string-array name="status_options">
+        <item>Aberto</item>
+        <item>Em andamento</item>
+        <item>Concluído</item>
+        <item>Cancelado</item>
+    </string-array>
 </resources>
