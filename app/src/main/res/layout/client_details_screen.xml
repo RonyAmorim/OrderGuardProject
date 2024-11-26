@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_gray"
-    tools:context=".screen.OrderRegistrationScreen">
+    tools:context=".screen.ClientDetailsActivity">
 
     <!-- Botão de Voltar -->
     <ImageButton
@@ -22,13 +22,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:tint="@color/primary_blue" />
 
-    <!-- Título do Formulário -->
+    <!-- Título da Tela -->
     <TextView
         android:id="@+id/formTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
-        android:text="Cadastro de Ordem"
+        android:text="Detalhes do Cliente"
         android:textColor="@color/primary_blue"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -36,14 +36,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Scroll View para os campos -->
+    <!-- Scroll View para os Detalhes -->
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/formTitle"
-        app:layout_constraintBottom_toTopOf="@id/cadastrarButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -53,203 +53,132 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Titulo -->
+            <!-- Nome -->
             <TextView
-                android:id="@+id/titleLabel"
+                android:id="@+id/tv_client_name_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Título"
+                android:text="Nome"
                 android:textColor="#000"
                 android:textSize="17sp"
                 android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/titleEditText"
+            <TextView
+                android:id="@+id/tv_client_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:background="@drawable/edittext_background"
-                android:hint="Digite o título"
-                android:inputType="text"
                 android:padding="12dp"
+                android:text="João Silva"
                 android:textColor="#000"
                 android:textSize="16sp" />
 
-            <!-- Descrição -->
+            <!-- CPF/CNPJ -->
             <TextView
-                android:id="@+id/descriptionLabel"
+                android:id="@+id/tv_client_cpf_cnpj_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Descrição"
+                android:text="CPF/CNPJ"
                 android:textColor="#000"
                 android:textSize="17sp"
                 android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/descriptionEditText"
+            <TextView
+                android:id="@+id/tv_client_cpf_cnpj"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:background="@drawable/edittext_background"
-                android:hint="Digite a descrição"
-                android:inputType="text"
                 android:padding="12dp"
+                android:text="123.456.789-00"
                 android:textColor="#000"
                 android:textSize="16sp" />
 
-            <!-- Status -->
+            <!-- Email -->
             <TextView
-                android:id="@+id/statusLabel"
+                android:id="@+id/tv_client_email_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Status"
+                android:text="Email"
                 android:textColor="#000"
                 android:textSize="17sp"
                 android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/statusSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/spinner_background"
-                android:popupBackground="@drawable/spinner_dropdown_background"
-                />
-
-            <!-- Data de Criação -->
             <TextView
-                android:id="@+id/createdAtLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Prazo"
-                android:textColor="#000"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/createdAtEditText"
+                android:id="@+id/tv_client_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:background="@drawable/edittext_background"
-                android:hint="Data de entrega"
-                android:inputType="text"
                 android:padding="12dp"
-                android:textColor="#000"
-                android:textSize="16sp"
-                android:focusable="false"
-                android:clickable="false" />
-
-            <!-- Custo Total -->
-            <TextView
-                android:id="@+id/totalCostLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Custo Total"
-                android:textColor="#000"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/totalCostEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/edittext_background"
-                android:hint="Digite o custo total"
-                android:inputType="numberDecimal"
-                android:padding="12dp"
+                android:text="joao.silva@example.com"
                 android:textColor="#000"
                 android:textSize="16sp" />
 
-            <!-- Detalhes do Serviço -->
+            <!-- Telefone -->
             <TextView
-                android:id="@+id/serviceDetailsLabel"
+                android:id="@+id/tv_client_phone_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Detalhes do Serviço"
+                android:text="Telefone"
                 android:textColor="#000"
                 android:textSize="17sp"
                 android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/serviceDetailsEditText"
+            <TextView
+                android:id="@+id/tv_client_phone"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:background="@drawable/edittext_background"
-                android:gravity="top"
-                android:hint="Digite os detalhes do serviço"
-                android:inputType="textMultiLine"
                 android:padding="12dp"
+                android:text="(11) 99999-9999"
                 android:textColor="#000"
                 android:textSize="16sp" />
 
-            <!-- Adicionar Serviço -->
-            <LinearLayout
-                android:id="@+id/addServiceLayout"
+            <!-- Endereço -->
+            <TextView
+                android:id="@+id/tv_client_address_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Endereço"
+                android:textColor="#000"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tv_client_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="16dp"
-                android:gravity="center_vertical">
+                android:layout_marginTop="4dp"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:text="Rua Exemplo, 123, São Paulo - SP"
+                android:textColor="#000"
+                android:textSize="16sp" />
 
-                <!-- Ícone de Adicionar -->
-                <ImageView
-                    android:id="@+id/btnAddService"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/baseline_add_24"
-                    android:tint="@color/primary_blue"
-                    android:layout_marginEnd="8dp"
-                    tools:ignore="UseAppTint" />
-
-                <!-- Texto de Adicionar Serviço -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Adicionar Serviço"
-                    android:textColor="@color/primary_blue"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <!-- Container para Serviços -->
-            <LinearLayout
-                android:id="@+id/serviceDetailsContainer"
+            <!-- Notas -->
+            <TextView
+                android:id="@+id/tv_client_notes_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Notas"
+                android:textColor="#000"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tv_client_notes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="16dp"
-                android:showDividers="middle" />
-
+                android:layout_marginTop="4dp"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:text="Sem observações adicionais."
+                android:textColor="#000"
+                android:textSize="16sp" />
 
         </LinearLayout>
     </ScrollView>
-
-    <!-- Botão de Cadastrar -->
-    <TextView
-        android:id="@+id/cadastrarButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/btn_background"
-        android:gravity="center"
-        android:padding="16dp"
-        android:text="Cadastrar Ordem"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

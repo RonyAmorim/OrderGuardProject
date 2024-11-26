@@ -98,13 +98,27 @@ class OrderRegistrationScreen : AppCompatActivity() {
     }
 
     private fun setupListeners() {
+        binding.btnBack.setOnClickListener {
+            finish() // Fecha a atividade atual e retorna à anterior
+        }
         binding.cadastrarButton.setOnClickListener { cadastrarOrdem() }
         binding.addServiceLayout.setOnClickListener { addServiceDetail() }
     }
 
     private fun addServiceDetail() {
+        // Infla o layout do item de detalhe de serviço
         val serviceDetailView = layoutInflater.inflate(R.layout.item_service_detail, null)
 
+        // Configura as margens para o item
+        val layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            setMargins(0, 16, 0, 16) // Adiciona margem superior e inferior de 16dp
+        }
+        serviceDetailView.layoutParams = layoutParams
+
+        // Configura o botão de excluir
         val deleteButton = serviceDetailView.findViewById<ImageView>(R.id.btn_delete_service)
         deleteButton.setOnClickListener {
             binding.serviceDetailsContainer.removeView(serviceDetailView)
@@ -112,8 +126,10 @@ class OrderRegistrationScreen : AppCompatActivity() {
             serviceDetailsList.removeAll { it.serviceName == serviceName }
         }
 
+        // Adiciona o item ao contêiner
         binding.serviceDetailsContainer.addView(serviceDetailView)
     }
+
 
     private fun collectServiceDetails(): List<ServiceDetail> {
         val details = mutableListOf<ServiceDetail>()
