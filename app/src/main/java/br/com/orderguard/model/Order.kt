@@ -1,8 +1,12 @@
 package br.com.orderguard.model
 
 data class Order(
-    val id: String,
-    val name: String,
-    val status: String,
-    val date: String
+    val title: String, // Título da ordem
+    val description: String, // Descrição detalhada
+    val status: String, // Status da ordem ("Pending", "Completed", etc.)
+    val deadline: String, // Prazo para entrega ou realização (Data de Criação)
+    val totalCost: Double, // Custo total da ordem
+    val serviceDetails: List<ServiceDetail>, // Lista de detalhes dos serviços
+    val notes: List<String> // Lista de notas adicionais
 )
+

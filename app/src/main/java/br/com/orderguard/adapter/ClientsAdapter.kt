@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.orderguard.R
 import br.com.orderguard.model.Client
 
-class ClientsAdapter(private val clients: List<Client>) :
+class ClientsAdapter(private var clients: MutableList<Client>) :
     RecyclerView.Adapter<ClientsAdapter.ClientViewHolder>() {
 
     class ClientViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -33,5 +33,16 @@ class ClientsAdapter(private val clients: List<Client>) :
 
     override fun getItemCount(): Int {
         return clients.size
+    }
+
+    /**
+     * Updates the client list and refreshes the RecyclerView.
+     *
+     * @param updatedClients The new list of clients to display.
+     */
+    fun updateList(updatedClients: List<Client>) {
+        clients.clear()
+        clients.addAll(updatedClients)
+        notifyDataSetChanged()
     }
 }

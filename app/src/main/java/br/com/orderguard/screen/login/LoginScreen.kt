@@ -3,7 +3,6 @@ package br.com.orderguard.screen.login
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -12,7 +11,6 @@ import br.com.orderguard.R
 import br.com.orderguard.databinding.LoginScreenBinding
 import br.com.orderguard.screen.home.MainScreen
 import br.com.orderguard.screen.singup.SingUpScreen
-import br.com.orderguard.RecuperarSenha
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginScreen : AppCompatActivity() {
@@ -71,7 +69,7 @@ class LoginScreen : AppCompatActivity() {
 
         // Listener para redirecionar para a tela de recuperação de senha
         binding.forgotPasswordTextView.setOnClickListener {
-            val intent = Intent(this, RecuperarSenha::class.java)  // Intent para a activity de recuperação de senha
+            val intent = Intent(this, RecoverPasswordScreen::class.java)  // Intent para a activity de recuperação de senha
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // Se desejar animação
         }

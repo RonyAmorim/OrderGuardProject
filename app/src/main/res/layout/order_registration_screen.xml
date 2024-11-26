@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/main"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_gray"
@@ -17,7 +17,6 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="20dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:padding="14dp"
         android:src="@drawable/sharp_arrow_back_ios_new_24"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,224 +28,226 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:text="Cadastro de Ordem"
         android:textColor="@color/primary_blue"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Nome do Cliente -->
-    <TextView
-        android:id="@+id/nomeClienteLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:text="Nome do Cliente"
-        android:textColor="#000"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/formTitle" />
-
-    <EditText
-        android:id="@+id/nomeClienteEditText"
+    <!-- Scroll View para os campos -->
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/edittext_background"
-        android:hint="Digite o nome do cliente"
-        android:inputType="text"
-        android:padding="12dp"
-        android:textColor="#000"
-        android:textSize="16sp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/formTitle"
+        app:layout_constraintBottom_toTopOf="@id/cadastrarButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nomeClienteLabel" />
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <!-- Contato do Cliente -->
-    <TextView
-        android:id="@+id/contatoClienteLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:text="Contato do Cliente"
-        android:textColor="#000"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nomeClienteEditText" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-    <EditText
-        android:id="@+id/contatoClienteEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/edittext_background"
-        android:hint="Digite o contato"
-        android:inputType="text"
-        android:padding="12dp"
-        android:textColor="#000"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contatoClienteLabel" />
+            <!-- Titulo -->
+            <TextView
+                android:id="@+id/titleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Título"
+                android:textColor="#000"
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
-    <!-- Categoria -->
-    <TextView
-        android:id="@+id/categoriaLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:text="Categoria"
-        android:textColor="#000"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contatoClienteEditText" />
+            <EditText
+                android:id="@+id/titleEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/edittext_background"
+                android:hint="Digite o título"
+                android:inputType="text"
+                android:padding="12dp"
+                android:textColor="#000"
+                android:textSize="16sp" />
 
-    <EditText
-        android:id="@+id/categoriaEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/edittext_background"
-        android:hint="Digite a categoria"
-        android:inputType="text"
-        android:padding="12dp"
-        android:textColor="#000"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categoriaLabel" />
+            <!-- Descrição -->
+            <TextView
+                android:id="@+id/descriptionLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Descrição"
+                android:textColor="#000"
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
-    <!-- Preço -->
-    <TextView
-        android:id="@+id/precoLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:text="Preço"
-        android:textColor="#000"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categoriaEditText" />
+            <EditText
+                android:id="@+id/descriptionEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/edittext_background"
+                android:hint="Digite a descrição"
+                android:inputType="text"
+                android:padding="12dp"
+                android:textColor="#000"
+                android:textSize="16sp" />
 
-    <EditText
-        android:id="@+id/precoEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/edittext_background"
-        android:hint="Digite o preço"
-        android:inputType="numberDecimal"
-        android:padding="12dp"
-        android:textColor="#000"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/precoLabel" />
+            <!-- Status -->
+            <TextView
+                android:id="@+id/statusLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Status"
+                android:textColor="#000"
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
-    <!-- Status da Ordem -->
-    <TextView
-        android:id="@+id/statusOrdemLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:text="Status da Ordem"
-        android:textColor="#000"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/precoEditText" />
+            <Spinner
+                android:id="@+id/statusSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/spinner_background" />
 
-    <Spinner
-        android:id="@+id/statusOrdemSpinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/spinner_background"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/statusOrdemLabel"
-        app:layout_constraintBottom_toTopOf="@id/descreveLabel" />
+            <!-- Data de Criação -->
+            <TextView
+                android:id="@+id/createdAtLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Prazo"
+                android:textColor="#000"
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
-    <!-- Descrição -->
-    <TextView
-        android:id="@+id/descreveLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:text="Descrição"
-        android:textColor="#000"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/statusOrdemSpinner" />
+            <EditText
+                android:id="@+id/createdAtEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/edittext_background"
+                android:hint="Data de entrega"
+                android:inputType="text"
+                android:padding="12dp"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:focusable="false"
+                android:clickable="false" />
 
-    <EditText
-        android:id="@+id/descreveEditText"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/edittext_background"
-        android:gravity="top"
-        android:hint="Digite a descrição do pedido"
-        android:inputType="textMultiLine"
-        android:padding="12dp"
-        android:textColor="#000"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descreveLabel" />
+            <!-- Custo Total -->
+            <TextView
+                android:id="@+id/totalCostLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Custo Total"
+                android:textColor="#000"
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
+            <EditText
+                android:id="@+id/totalCostEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/edittext_background"
+                android:hint="Digite o custo total"
+                android:inputType="numberDecimal"
+                android:padding="12dp"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <!-- Detalhes do Serviço -->
+            <TextView
+                android:id="@+id/serviceDetailsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Detalhes do Serviço"
+                android:textColor="#000"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/serviceDetailsEditText"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/edittext_background"
+                android:gravity="top"
+                android:hint="Digite os detalhes do serviço"
+                android:inputType="textMultiLine"
+                android:padding="12dp"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <!-- Adicionar Serviço -->
+            <LinearLayout
+                android:id="@+id/addServiceLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical">
+
+                <!-- Ícone de Adicionar -->
+                <ImageView
+                    android:id="@+id/btnAddService"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/baseline_add_24"
+                    android:tint="@color/primary_blue"
+                    android:layout_marginEnd="8dp"
+                    tools:ignore="UseAppTint" />
+
+                <!-- Texto de Adicionar Serviço -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Adicionar Serviço"
+                    android:textColor="@color/primary_blue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Container para Serviços -->
+            <LinearLayout
+                android:id="@+id/serviceDetailsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="16dp"
+                android:showDividers="middle" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Botão de Cadastrar -->
     <TextView
         android:id="@+id/cadastrarButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="100dp"
         android:background="@drawable/btn_background"
         android:gravity="center"
-        android:paddingStart="16dp"
-        android:paddingTop="12dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="12dp"
+        android:padding="16dp"
         android:text="Cadastrar Ordem"
-        android:textStyle="bold"
-        android:textAllCaps="false"
-        android:textColor="#fff"
+        android:textColor="@color/white"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

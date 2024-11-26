@@ -15,8 +15,16 @@ class MainScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_screen)
 
-        // Carregar o fragmento inicial (Home)
-        loadFragment(HomeFragment(), "home")
+        // Recupera o valor do parâmetro "navigateTo"
+        val navigateTo = intent.getStringExtra("navigateTo")
+
+        // Carrega o fragmento inicial com base no valor do parâmetro
+        when (navigateTo) {
+            "clients" -> loadFragment(ClientsFragment(), "clients")
+            "orders" -> loadFragment(OrdersFragment(), "orders")
+            "settings" -> loadFragment(ProfileFragment(), "settings")
+            else -> loadFragment(HomeFragment(), "home") // Valor padrão
+        }
 
         // Configurar o BottomNavigationView
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation)
@@ -30,6 +38,7 @@ class MainScreen : AppCompatActivity() {
             true
         }
     }
+
 
     // Função para carregar o fragmento com animação baseada no fragmento atual e destino
     private fun loadFragment(fragment: Fragment, newFragmentTag: String) {

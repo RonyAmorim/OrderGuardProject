@@ -12,12 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.orderguard.screen.OrderRegistrationScreen
 import br.com.orderguard.model.Order
 import br.com.orderguard.R
-import br.com.orderguard.RecentOrdersAdapter
 
 class HomeFragment : Fragment() {
 
     private lateinit var rvRecentOrders: RecyclerView
-    private lateinit var adapter: RecentOrdersAdapter
     private lateinit var recentOrders: MutableList<Order>
 
     override fun onCreateView(
@@ -32,16 +30,6 @@ class HomeFragment : Fragment() {
         rvRecentOrders.layoutManager = LinearLayoutManager(requireContext())
 
         // Simular dados de ordens recentes
-        recentOrders = mutableListOf(
-            Order("1234", "Pedido de Equipamento", "Em Progresso", "01/01/2024"),
-            Order("1235", "Serviço de Desenvolvimento", "Concluída", "02/01/2024"),
-            Order("1236", "Consultoria Técnica", "Cancelada", "03/01/2024")
-        )
-
-        // Configurar o adapter
-        adapter = RecentOrdersAdapter(requireContext(), recentOrders)
-        rvRecentOrders.adapter = adapter
-
         // Configurar o botão de criar nova ordem
         val btnCreateOrder: LinearLayout = view.findViewById(R.id.btnCreateOrder)
         btnCreateOrder.setOnClickListener {

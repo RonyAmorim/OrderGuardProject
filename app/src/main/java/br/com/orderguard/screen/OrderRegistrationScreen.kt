@@ -1,80 +1,134 @@
 package br.com.orderguard.screen
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import br.com.orderguard.R
 import br.com.orderguard.databinding.OrderRegistrationScreenBinding
+import br.com.orderguard.model.Order
+import br.com.orderguard.model.ServiceDetail
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 class OrderRegistrationScreen : AppCompatActivity() {
 
-    // View Binding
     private lateinit var binding: OrderRegistrationScreenBinding
-
-    // Firebase
     private val db = FirebaseFirestore.getInstance()
+    private val serviceDetailsList = mutableListOf<ServiceDetail>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Inicializando o binding
         binding = OrderRegistrationScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Configurar o Spinner de status
+        configureSpinner()
+        applyMasks()
+        setupListeners()
+    }
+
+    private fun configureSpinner() {
         val statusOptions = listOf("Aberto", "Em andamento", "Concluído", "Cancelado")
         val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, statusOptions)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.statusOrdemSpinner.adapter = spinnerAdapter
-
-        // Listener para buscar cliente ao perder foco
-        binding.nomeClienteEditText.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                buscarClientePorNome(binding.nomeClienteEditText.text.toString())
-            }
-        }
-
-        // Listener do botão cadastrar
-        binding.cadastrarButton.setOnClickListener {
-            cadastrarOrdem()
-        }
+        binding.statusSpinner.adapter = spinnerAdapter
     }
 
-    /**
-     * Busca um cliente no Firestore pelo nome e preenche os campos se encontrado.
-     */
-    private fun buscarClientePorNome(nomeCliente: String) {
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user == null) {
-            Toast.makeText(this, "Usuário não autenticado! Faça login novamente.", Toast.LENGTH_SHORT).show()
-            finish()
-            return
-        }
+    private fun applyMasks() {
+        // Mascara de data
+        binding.createdAtEditText.addTextChangedListener(object : TextWatcher {
+            private var isUpdating = false
+            private val dateFormat = "##/##/####"
+            private val regex = Regex("[^0-9]")
 
-        val userUID = user.uid
-        val clientesRef = db.collection("Users").document(userUID).collection("Clients")
-        clientesRef.whereEqualTo("fullName", nomeCliente).get()
-            .addOnSuccessListener { snapshot ->
-                if (!snapshot.isEmpty) {
-                    val cliente = snapshot.documents[0]
-                    binding.contatoClienteEditText.setText(cliente.getString("phone") ?: "Não informado")
-                    Toast.makeText(this, "Cliente encontrado: ${cliente.getString("fullName")}", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Cliente não encontrado!", Toast.LENGTH_SHORT).show()
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (isUpdating) return
+                val unmasked = s?.replace(regex, "") ?: ""
+                var formatted = ""
+                var index = 0
+
+                for (char in dateFormat) {
+                    if (char == '#') {
+                        if (index < unmasked.length) {
+                            formatted += unmasked[index]
+                            index++
+                        } else break
+                    } else {
+                        formatted += char
+                    }
                 }
+
+                isUpdating = true
+                binding.createdAtEditText.setText(formatted)
+                binding.createdAtEditText.setSelection(formatted.length)
+                isUpdating = false
             }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Erro ao buscar cliente: ${e.message}", Toast.LENGTH_SHORT).show()
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        // Mascara de moeda
+        binding.totalCostEditText.addTextChangedListener(object : TextWatcher {
+            private val currencyFormat = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.totalCostEditText.removeTextChangedListener(this)
+
+                val cleanString = s.toString().replace("[R$,.\\s]".toRegex(), "")
+                val parsed = cleanString.toDoubleOrNull() ?: 0.0
+                val formatted = currencyFormat.format(parsed / 100)
+
+                binding.totalCostEditText.setText(formatted)
+                binding.totalCostEditText.setSelection(formatted.length)
+
+                binding.totalCostEditText.addTextChangedListener(this)
             }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
     }
 
-    /**
-     * Cadastra uma nova ordem no Firestore associada ao cliente.
-     */
+    private fun setupListeners() {
+        binding.cadastrarButton.setOnClickListener { cadastrarOrdem() }
+        binding.addServiceLayout.setOnClickListener { addServiceDetail() }
+    }
+
+    private fun addServiceDetail() {
+        val serviceDetailView = layoutInflater.inflate(R.layout.item_service_detail, null)
+
+        val deleteButton = serviceDetailView.findViewById<ImageView>(R.id.btn_delete_service)
+        deleteButton.setOnClickListener {
+            binding.serviceDetailsContainer.removeView(serviceDetailView)
+            val serviceName = serviceDetailView.findViewById<EditText>(R.id.et_service_name).text.toString()
+            serviceDetailsList.removeAll { it.serviceName == serviceName }
+        }
+
+        binding.serviceDetailsContainer.addView(serviceDetailView)
+    }
+
+    private fun collectServiceDetails(): List<ServiceDetail> {
+        val details = mutableListOf<ServiceDetail>()
+        for (i in 0 until binding.serviceDetailsContainer.childCount) {
+            val serviceView = binding.serviceDetailsContainer.getChildAt(i)
+            val serviceName = serviceView.findViewById<EditText>(R.id.et_service_name).text.toString()
+            val cost = serviceView.findViewById<EditText>(R.id.et_service_cost).text.toString().toDoubleOrNull() ?: 0.0
+            val quantity = serviceView.findViewById<EditText>(R.id.et_service_quantity).text.toString().toIntOrNull() ?: 0
+            if (serviceName.isNotBlank()) {
+                details.add(ServiceDetail(serviceName, cost, quantity))
+            }
+        }
+        return details
+    }
+
     private fun cadastrarOrdem() {
         val user = FirebaseAuth.getInstance().currentUser
         if (user == null) {
@@ -82,64 +136,44 @@ class OrderRegistrationScreen : AppCompatActivity() {
             return
         }
 
+        val order = collectOrderData() ?: return
         val userUID = user.uid
-        val nomeCliente = binding.nomeClienteEditText.text.toString()
-        if (nomeCliente.isEmpty()) {
-            Toast.makeText(this, "Digite o nome do cliente!", Toast.LENGTH_SHORT).show()
-            return
-        }
 
-        val clientesRef = db.collection("Users").document(userUID).collection("Clients")
-        clientesRef.whereEqualTo("fullName", nomeCliente).get()
-            .addOnSuccessListener { snapshot ->
-                if (!snapshot.isEmpty) {
-                    val clienteId = snapshot.documents[0].id
-                    salvarOrdem(userUID, clienteId)
-                } else {
-                    Toast.makeText(this, "Cliente não encontrado para associar a ordem!", Toast.LENGTH_SHORT).show()
-                }
+        db.collection("Users").document(userUID).collection("Orders")
+            .add(order)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Ordem cadastrada com sucesso!", Toast.LENGTH_SHORT).show()
+                finish()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Erro ao buscar cliente: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Erro ao salvar ordem: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
-    /**
-     * Salva a ordem no Firestore associada ao cliente.
-     */
-    private fun salvarOrdem(userUID: String, clienteId: String) {
-        val ordensRef = db.collection("Users").document(userUID).collection("Clients").document(clienteId).collection("Orders")
+    private fun collectOrderData(): Order? {
+        val title = binding.titleEditText.text.toString()
+        if (title.isEmpty()) {
+            Toast.makeText(this, "Preencha o título!", Toast.LENGTH_SHORT).show()
+            return null
+        }
 
-        // Verificar o número atual de ordens para gerar o próximo ID
-        ordensRef.get()
-            .addOnSuccessListener { snapshot ->
-                // Calcula o próximo número de ID com base na quantidade atual
-                val nextId = String.format("%04d", snapshot.size() + 1)
+        val description = binding.descriptionEditText.text.toString()
+        val status = binding.statusSpinner.selectedItem.toString()
+        val deadline = binding.createdAtEditText.text.toString()
+        val totalCost = binding.totalCostEditText.text.toString().replace("[R$,.\\s]".toRegex(), "").toDoubleOrNull()?.div(100)
+            ?: 0.0
 
-                val dataAtual = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+        val serviceDetails = collectServiceDetails()
+        val notes = listOf("Sem observações adicionais")
 
-                // Dados da ordem
-                val ordemData = mapOf(
-                    "id" to nextId, // ID sequencial
-                    "categoria" to binding.categoriaEditText.text.toString(),
-                    "preco" to binding.precoEditText.text.toString().toDoubleOrNull(),
-                    "descricao" to binding.descreveEditText.text.toString(),
-                    "status" to binding.statusOrdemSpinner.selectedItem.toString(),
-                    "dataCriacao" to dataAtual
-                )
-
-                // Salvar a nova ordem com o próximo ID
-                ordensRef.document(nextId).set(ordemData)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "Ordem cadastrada com sucesso!", Toast.LENGTH_SHORT).show()
-                        finish()
-                    }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(this, "Erro ao salvar ordem: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Erro ao acessar as ordens: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
+        return Order(
+            title = title,
+            description = description,
+            status = status,
+            deadline = deadline,
+            totalCost = totalCost,
+            serviceDetails = serviceDetails,
+            notes = notes
+        )
     }
 }

@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import br.com.orderguard.databinding.ProfileSettingsFragmentBinding
+import br.com.orderguard.screen.ResetPasswordScreen
 import br.com.orderguard.screen.login.LoginScreen
+import br.com.orderguard.screen.profile.EditPersonalDataScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -64,6 +66,19 @@ class ProfileFragment : Fragment() {
             val intent = Intent(requireContext(), LoginScreen::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent) // Redirecionar para a tela de login
+        }
+
+        // Configuração do botão "Editar Perfil"
+        binding.btnEditProfile.setOnClickListener {
+            val intent = Intent(requireContext(), EditPersonalDataScreen::class.java)
+            startActivity(intent) // Redirecionar para a tela de edição
+        }
+
+        // Configuração do botão "Alterar Senha"
+        binding.securitySection.setOnClickListener {
+            // Redirecionar para a tela de alteração de senha
+            val intent = Intent(requireContext(), ResetPasswordScreen::class.java)
+            startActivity(intent)
         }
     }
 

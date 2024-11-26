@@ -1,5 +1,6 @@
 package br.com.orderguard.screen.client_registration
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import androidx.fragment.app.commit
 import br.com.orderguard.R
 import br.com.orderguard.databinding.ClientRegistrationScreenBinding
 import br.com.orderguard.model.Client
+import br.com.orderguard.screen.home.MainScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
@@ -111,7 +113,6 @@ class ClientRegistrationScreen : AppCompatActivity() {
                 val clientDataMap = mapOf(
                     "id" to clientData.id,
                     "fullName" to clientData.fullName,
-                    // Salva o CPF/CNPJ com máscara
                     "cpfCnpj" to clientData.cpfCnpj,
                     "email" to clientData.email,
                     "phone" to clientData.phone,
@@ -124,15 +125,20 @@ class ClientRegistrationScreen : AppCompatActivity() {
                         "zipCode" to clientData.address.zipCode
                     ),
                     "notes" to clientData.notes,
-                    "createdAt" to formattedDate, // Salva a data formatada
-                    "updatedAt" to formattedDate  // Salva a data formatada
+                    "createdAt" to formattedDate,
+                    "updatedAt" to formattedDate
                 )
 
                 // Salva os dados no Firestore usando o ID gerado
                 clientsRef.document(nextId).set(clientDataMap)
                     .addOnSuccessListener {
                         Toast.makeText(this, "Cliente cadastrado com sucesso", Toast.LENGTH_SHORT).show()
-                        finish()
+
+                        // Abre a MainScreen e seleciona o ClientsFragment
+                        val intent = Intent(this, MainScreen::class.java)
+                        intent.putExtra("navigateTo", "clients") // Passa um parâmetro para navegar ao fragmento específico
+                        startActivity(intent)
+                        finish() // Fecha a tela de registro
                     }
                     .addOnFailureListener { e ->
                         Toast.makeText(this, "Erro ao cadastrar cliente: ${e.message}", Toast.LENGTH_SHORT).show()

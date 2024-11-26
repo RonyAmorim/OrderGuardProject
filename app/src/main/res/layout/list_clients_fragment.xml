@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -64,11 +63,13 @@
             app:tint="@color/white" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     <!-- RecyclerView para listagem de clientes -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_recent_orders"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="90dp"

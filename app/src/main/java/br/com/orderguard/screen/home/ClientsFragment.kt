@@ -7,21 +7,25 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import br.com.orderguard.R
 import br.com.orderguard.adapter.ClientsAdapter
+import br.com.orderguard.databinding.ListClientsFragmentBinding
+import br.com.orderguard.model.Address
 import br.com.orderguard.model.Client
 import br.com.orderguard.screen.client_registration.ClientRegistrationScreen
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ClientsFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
+    private var _binding: ListClientsFragmentBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var clientsAdapter: ClientsAdapter
     private val clientsList = mutableListOf<Client>()
     private val filteredClientsList = mutableListOf<Client>()
@@ -30,35 +34,43 @@ class ClientsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.list_clients_fragment, container, false)
+        _binding = ListClientsFragmentBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        // Configura o RecyclerView
-        recyclerView = view.findViewById(R.id.rv_recent_orders)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        clientsAdapter = ClientsAdapter(filteredClientsList)
-        recyclerView.adapter = clientsAdapter
+        setupRecyclerView()
+        setupSearchBar()
+        setupAddButton()
 
-        // Carrega os clientes
         fetchClients()
 
-        // Configura o botão para adicionar um cliente
-        val addButton: View = view.findViewById(R.id.addButton)
-        addButton.setOnClickListener {
-            startActivity(Intent(activity, ClientRegistrationScreen::class.java))
-        }
+        return view
+    }
 
-        // Configura a barra de pesquisa
-        val searchBar: EditText = view.findViewById(R.id.searchBar)
-        searchBar.addTextChangedListener(object : TextWatcher {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setupRecyclerView() {
+        clientsAdapter = ClientsAdapter(filteredClientsList)
+        binding.rvRecentOrders.layoutManager = LinearLayoutManager(context)
+        binding.rvRecentOrders.adapter = clientsAdapter
+    }
+
+    private fun setupSearchBar() {
+        binding.searchBar.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 filterClients(s.toString())
             }
-
             override fun afterTextChanged(s: Editable?) {}
         })
+    }
 
-        return view
+    private fun setupAddButton() {
+        binding.addButton.setOnClickListener {
+            startActivity(Intent(activity, ClientRegistrationScreen::class.java))
+        }
     }
 
     private fun fetchClients() {
@@ -76,13 +88,12 @@ class ClientsFragment : Fragment() {
                 if (!snapshot.isEmpty) {
                     clientsList.clear()
                     for (document in snapshot.documents) {
-                        val client = document.toObject(Client::class.java)
-                        client?.let {
-                            it.id = document.id // Define o ID gerado pelo Firebase
-                            clientsList.add(it)
-                        }
+                        val client = documentToClient(document)
+                        clientsList.add(client)
                     }
-                    filterClients("") // Exibe todos os clientes inicialmente
+                    filteredClientsList.clear()
+                    filteredClientsList.addAll(clientsList)
+                    clientsAdapter.notifyDataSetChanged()
                 } else {
                     Toast.makeText(requireContext(), "Nenhum cliente encontrado.", Toast.LENGTH_SHORT).show()
                 }
@@ -92,21 +103,51 @@ class ClientsFragment : Fragment() {
             }
     }
 
-    private fun filterClients(query: String) {
-        filteredClientsList.clear()
-        if (query.isEmpty()) {
-            filteredClientsList.addAll(clientsList)
-        } else {
-            val lowerCaseQuery = query.lowercase()
-            for (client in clientsList) {
-                if (client.fullName.lowercase().contains(lowerCaseQuery) ||
-                    client.cpfCnpj.lowercase().contains(lowerCaseQuery) ||
-                    client.email.lowercase().contains(lowerCaseQuery)
-                ) {
-                    filteredClientsList.add(client)
-                }
-            }
+    private fun documentToClient(document: DocumentSnapshot): Client {
+        val id = document.id
+        val fullName = document.getString("fullName") ?: ""
+        val cpfCnpj = document.getString("cpfCnpj") ?: ""
+        val email = document.getString("email") ?: ""
+        val phone = document.getString("phone") ?: ""
+        val address = document.toObject(Address::class.java) ?: Address()
+        val notes = document.get("notes") as? List<String> ?: emptyList()
+
+        val createdAt = when (val value = document.get("createdAt")) {
+            is Long -> value
+            is String -> value.toLongOrNull() ?: 0L
+            is Timestamp -> value.toDate().time
+            else -> 0L
         }
+
+        val updatedAt = when (val value = document.get("updatedAt")) {
+            is Long -> value
+            is String -> value.toLongOrNull() ?: 0L
+            is Timestamp -> value.toDate().time
+            else -> 0L
+        }
+
+        return Client(
+            id = id,
+            fullName = fullName,
+            cpfCnpj = cpfCnpj,
+            email = email,
+            phone = phone,
+            address = address,
+            notes = notes,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
+    }
+
+    private fun filterClients(query: String) {
+        val lowerCaseQuery = query.lowercase()
+        filteredClientsList.clear()
+        filteredClientsList.addAll(clientsList.filter { client ->
+            client.fullName.lowercase().contains(lowerCaseQuery) ||
+                    client.email.lowercase().contains(lowerCaseQuery) ||
+                    client.cpfCnpj.lowercase().contains(lowerCaseQuery) ||
+                    (client.id?.lowercase()?.contains(lowerCaseQuery) ?: false)
+        })
         clientsAdapter.notifyDataSetChanged()
     }
 }

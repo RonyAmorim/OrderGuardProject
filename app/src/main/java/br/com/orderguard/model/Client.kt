@@ -7,5 +7,7 @@ data class Client(
     var email: String = "",
     var phone: String = "",
     var address: Address = Address(),
-    var notes: List<String> = emptyList()
+    var notes: List<String> = emptyList(),
+    var createdAt: Long = 0L, // Representando a data de criação em milissegundos
+    var updatedAt: Long = 0L  // Representando a data de atualização em milissegundos
 )
