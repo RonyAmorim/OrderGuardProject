@@ -19,7 +19,7 @@
             android:id="@+id/tv_order_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ordem #1234"
+            android:text="Titulo"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/primary_blue" />
@@ -28,7 +28,7 @@
             android:id="@+id/tv_order_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nome: Pedido de Equipamento"
+            android:text="Cliente: "
             android:textSize="14sp"
             android:textColor="@color/primary_text" />
 
@@ -44,7 +44,7 @@
             android:id="@+id/tv_order_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Data: 01/01/2024"
+            android:text="Prazo: 01/01/2024"
             android:textSize="14sp"
             android:textColor="@color/primary_text" />
     </LinearLayout>

@@ -1,7 +1,7 @@
 package br.com.orderguard.model
 
 data class ServiceDetail(
-    val serviceName: String, // Nome do serviço
-    val cost: Double, // Custo do serviço
-    val quantity: Int // Quantidade de serviços realizados
+    var serviceName: String = "",
+    var cost: Double = 0.0,
+    var quantity: Int = 0
 )

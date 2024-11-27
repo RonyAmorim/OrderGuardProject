@@ -22,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:tint="@color/primary_blue" />
 
-    <!-- Título do Formulário -->
+    <!-- Título -->
     <TextView
         android:id="@+id/formTitle"
         android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Scroll View para os campos -->
+    <!-- Scroll View -->
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
@@ -53,7 +53,58 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Titulo -->
+            <!-- Cliente -->
+            <TextView
+                android:id="@+id/clientLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Cliente"
+                android:textColor="#000"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/clientDropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/spinner_background"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/clientText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="Selecione um cliente"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:ellipsize="end"
+                    android:maxLines="1" />
+
+                <ImageView
+                    android:id="@+id/clientIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/baseline_keyboard_arrow_down_24"
+                    android:contentDescription="@string/spinner_icon_desc"
+                    app:tint="@android:color/black" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/addClientButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_background"
+                android:text="Adicionar Novo Cliente"
+                android:textAllCaps="false"/>
+
+            <!-- Título da Ordem -->
             <TextView
                 android:id="@+id/titleLabel"
                 android:layout_width="wrap_content"
@@ -110,18 +161,40 @@
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/statusSpinner"
+            <LinearLayout
+                android:id="@+id/statusDropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:background="@drawable/spinner_background"
-                android:popupBackground="@drawable/spinner_dropdown_background"
-                />
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:gravity="center_vertical">
 
-            <!-- Data de Criação -->
+                <TextView
+                    android:id="@+id/statusText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="Aberto"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:ellipsize="end"
+                    android:maxLines="1" />
+
+                <ImageView
+                    android:id="@+id/statusIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/baseline_keyboard_arrow_down_24"
+                    android:contentDescription="@string/spinner_icon_desc"
+                    app:tint="@android:color/black" />
+            </LinearLayout>
+
+            <!-- Prazo -->
             <TextView
-                android:id="@+id/createdAtLabel"
+                android:id="@+id/deadlineLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -131,7 +204,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/createdAtEditText"
+                android:id="@+id/deadlineEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -140,9 +213,7 @@
                 android:inputType="text"
                 android:padding="12dp"
                 android:textColor="#000"
-                android:textSize="16sp"
-                android:focusable="false"
-                android:clickable="false" />
+                android:textSize="16sp" />
 
             <!-- Custo Total -->
             <TextView
@@ -178,19 +249,6 @@
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/serviceDetailsEditText"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/edittext_background"
-                android:gravity="top"
-                android:hint="Digite os detalhes do serviço"
-                android:inputType="textMultiLine"
-                android:padding="12dp"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
             <!-- Adicionar Serviço -->
             <LinearLayout
                 android:id="@+id/addServiceLayout"
@@ -200,17 +258,14 @@
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical">
 
-                <!-- Ícone de Adicionar -->
                 <ImageView
                     android:id="@+id/btnAddService"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:src="@drawable/baseline_add_24"
-                    android:tint="@color/primary_blue"
                     android:layout_marginEnd="8dp"
-                    tools:ignore="UseAppTint" />
+                    app:tint="@color/primary_blue" />
 
-                <!-- Texto de Adicionar Serviço -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -230,7 +285,46 @@
                 android:dividerHeight="16dp"
                 android:showDividers="middle" />
 
+            <!-- Comentários -->
+            <TextView
+                android:id="@+id/commentsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Comentários"
+                android:textColor="#000"
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
+            <EditText
+                android:id="@+id/commentEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/edittext_background"
+                android:hint="Adicionar comentário"
+                android:padding="12dp"
+                android:textColor="#000"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/addCommentButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/btn_background"
+                android:text="Adicionar Comentário"
+                android:textAllCaps="false"/>
+
+            <LinearLayout
+                android:id="@+id/commentsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="16dp"
+                android:showDividers="middle"/>
         </LinearLayout>
     </ScrollView>
 

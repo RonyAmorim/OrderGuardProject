@@ -7,4 +7,6 @@
         <item>Concluído</item>
         <item>Cancelado</item>
     </string-array>
+
+    <string name="spinner_icon_desc">Ícone de seleção do Spinner</string>
 </resources>
